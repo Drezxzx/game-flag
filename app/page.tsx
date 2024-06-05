@@ -13,7 +13,7 @@ interface Data {
 }
 
 export default function Home() {
-  const [data, setData] = useState<Welcome>()
+  const [data, setData] = useState<Data>()
   useEffect(() => {
     fetch("/api/")
       .then(res => res.json())
