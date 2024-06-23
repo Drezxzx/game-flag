@@ -3,10 +3,11 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import { Data, Respuesta } from '@/app/libs/types'
-import { Suspense } from "react";
+import {CircleLoader} from 'react-spinners'
 import ButtonSelect from "./components/ButtonSelect";
-import { useLife } from "./context/context";
+
 import Life from "./components/Life";
+import GameFinished from "./components/gameFinished";
 export interface Question {
   ID: number;
   img?: string;
@@ -14,17 +15,20 @@ export interface Question {
 }
 export default function Home() {
   const [data, setData] = useState<Data>()
+  const [isloading, setIsloading] = useState<boolean>(true)
   const [correct, setCorrect] = useState<Respuesta[]>()
   const [question, setQuestion] = useState<Array<Question[]>>([])
-
+ 
+ 
   useEffect(() => {
     if (!checkIfExistLocal()) {
       fetch("/api/")
         .then(res => res.json())
         .then(data => {
           console.log(data);
+          setIsloading(false)
           setData(data)
-
+         
         }
         )
     }
@@ -35,6 +39,8 @@ export default function Home() {
     if (data) {
       handleCorrect();
       handeleIncorret();
+      
+      
     }
   }, [data]);
 
@@ -69,30 +75,50 @@ export default function Home() {
       setCorrect(JSON.parse(correct))
       const question = localStorage.getItem("question") as string
       setQuestion(JSON.parse(question))
+      setIsloading(false)
       return true
     }
     return false
   }
 
-  return (
-    <main className="flex h-screen w-screen justify-center items-center flex-col relative">
-      <Life></Life>
-      <h1 className="absolute text-xl font-bold top-5">Adivina la bandera</h1>
-      {correct &&
-
-        <article className="animate-fade-in animate-duration-200 w-1/2 flex items-center justify-center flex-col gap-5" key={2}>
-          <img className="w-[30rem]" src={correct[0].img} alt="Imagen del pais" />
-          <div className="grid grid-cols-2 grid-rows-4 gap-7 items-center justify-center" key={1}>
-            {
-              question &&
-              question.map(item => (
-                <ButtonSelect key={item[0].ID} correct={correct[0].ID.toString()} name={item[0].name} id={item[0].ID} ></ButtonSelect>
-              ))
-            }
+  const Game = ()=>{
+    console.log(isloading);
+    
+      if (isloading) {
+        return (
+          <div className="flex h-screen w-screen justify-center items-center flex-col relative">
+            <CircleLoader color="white"></CircleLoader>
           </div>
-        </article>
-
+        )
       }
-    </main>
+    
+      return ( 
+        <main>
+          <article className="flex z-0 h-screen w-screen justify-center items-center flex-col relative">
+        <GameFinished></GameFinished>
+        <Life></Life>
+        <h1 className="absolute text-xl font-bold top-5">Adivina la bandera</h1>
+        {correct &&
+  
+          <article className="animate-fade-in animate-duration-200 w-1/2 flex items-center justify-center flex-col gap-5" key={2}>
+            <img className="w-[30rem]" src={correct[0].img} alt="Imagen del pais" />
+            <div className="grid grid-cols-2 grid-rows-4 gap-7 items-center justify-center" key={1}>
+              {
+                question &&
+                question.map(item => (
+                  <ButtonSelect key={item[0].ID} correct={correct[0].ID.toString()} name={item[0].name} id={item[0].ID} ></ButtonSelect>
+                ))
+              }
+            </div>
+          </article>
+  
+        }
+      </article>
+        </main>
+      )
+    
+  }
+  return (
+   <Game></Game>
   );
 }

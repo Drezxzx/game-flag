@@ -1,11 +1,17 @@
 import { create } from 'zustand'
 
 interface BearState {
-  life: number
-  lostLife: () => void
+  stateGame: string
+  lifes: number
+  setLife : (life: number) => void
+  endGame : () => void  
 }
 
+const statesGame = ["start", "lose"]
+
 export const useLife = create<BearState>()((set) => ({
-  life: 3,
-  lostLife: () => set((state) => ({ life: state.life - 1 }))
+  stateGame: statesGame[0],
+  lifes : 0,
+  setLife: (life) => set((state) => ({ lifes : life })),
+  endGame: () => set((state) => ({ stateGame: statesGame[1]}))
 }))
