@@ -5,9 +5,9 @@ import React, { useEffect, useState } from "react";
 import { Data, Respuesta } from '@/app/libs/types'
 import {CircleLoader} from 'react-spinners'
 import ButtonSelect from "./components/ButtonSelect";
-
 import Life from "./components/Life";
-import GameFinished from "./components/gameFinished";
+import GameFinished from "./components/GameFinished";
+
 export interface Question {
   ID: number;
   img?: string;
@@ -100,9 +100,9 @@ export default function Home() {
         <h1 className="absolute text-xl font-bold top-5">Adivina la bandera</h1>
         {correct &&
   
-          <article className="animate-fade-in animate-duration-200 w-1/2 flex items-center justify-center flex-col gap-5" key={2}>
+          <article className="animate-fade-in animate-duration-200 w-screen p-2 md:p-0 md:w-1/2 flex items-center justify-center flex-col gap-5" key={2}>
             <img className="w-[30rem]" src={correct[0].img} alt="Imagen del pais" />
-            <div className="grid grid-cols-2 grid-rows-4 gap-7 items-center justify-center" key={1}>
+            <div className="grid grid-cols-2 grid-rows-4 gap-11 md:gap-7 items-center justify-center" key={1}>
               {
                 question &&
                 question.map(item => (

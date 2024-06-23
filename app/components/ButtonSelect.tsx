@@ -53,7 +53,7 @@ export default function ButtonSelect({id, name, correct}:
                 disabled ={disable}
                 onClick={handleClick} 
                 id={id.toString()} 
-                className={`buttons disabled:opacity-70 disabled:text-slate-500/70 disabled:backdrop-brightness-50 disabled:pointer-events-none w-56 ${className} font-semibold p-2 text-black transition-all hover:scale-110`}>
+                className={`buttons disabled:opacity-70 disabled:text-slate-500/70 disabled:backdrop-brightness-50 disabled:pointer-events-none w-44 md:w-56 ${className} font-semibold p-1 md:p-2 text-black transition-all hover:scale-110`}>
                 {name}
             </button>
         )
