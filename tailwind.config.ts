@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import animations from '@midudev/tailwind-animations'
 
 const config: Config = {
   content: [
@@ -16,6 +15,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [animations],
+  plugins: [require('@midudev/tailwind-animations')],
 };
 export default config;
