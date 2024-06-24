@@ -1,10 +1,9 @@
-import { NextResponse } from "next/server";
 import { contrys as Welcome, contrys } from '@/app/libs/contrys.js'
 interface res {
     respuesta: any[],
     respuestasIncorrectas: any[]
 }
-export async function GET() {
+export async function getContry() {
     const res : res[] = [
         {respuesta: [],
         respuestasIncorrectas: []
@@ -26,7 +25,7 @@ export async function GET() {
     try {
     console.log(res)
 
-    return NextResponse.json({data : res})
+    return res
     } catch (error) {
         console.log(error);
         
