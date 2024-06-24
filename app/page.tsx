@@ -2,11 +2,12 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 import React, { useEffect, useState } from "react";
-import { Data, Respuesta } from '@/app/libs/types'
+import { Data, Datum, Respuesta } from '@/app/libs/types'
 import {CircleLoader} from 'react-spinners'
 import ButtonSelect from "./components/ButtonSelect";
 import Life from "./components/Life";
 import GameFinished from "./components/GameFinished";
+import { getContry } from "./libs/GameFunctions";
 
 export interface Question {
   ID: number;
@@ -14,7 +15,7 @@ export interface Question {
   name: string;
 }
 export default function Home() {
-  const [data, setData] = useState<Data>()
+  const [data, setData] = useState<any>()
   const [isloading, setIsloading] = useState<boolean>(true)
   const [correct, setCorrect] = useState<Respuesta[]>()
   const [question, setQuestion] = useState<Array<Question[]>>([])
@@ -22,35 +23,28 @@ export default function Home() {
  
   useEffect(() => {
     if (!checkIfExistLocal()) {
-      fetch("/api/")
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-          setIsloading(false)
-          setData(data)
-         
-        }
-        )
+      getContry()
+      .then(res => {
+        console.log(res?.[0]);
+        
+        setData(res)
+        setIsloading(false)
+      })
     }
-
   }, [])
 
   useEffect(() => {
     if (data) {
       handleCorrect();
       handeleIncorret();
-      
-      
     }
   }, [data]);
-
-  
 
   const handeleIncorret = () => {
     const res: any = []
     if (data) {
-      res.push(data.data[0].respuesta)
-      data.data[0].respuestasIncorrectas.map(item => {
+      res.push(data[0].respuesta)
+      data[0].respuestasIncorrectas.map((item: any) => {
         res.push(item)
         localStorage.setItem("question", JSON.stringify(res))
       })
@@ -64,16 +58,19 @@ export default function Home() {
   }
   const handleCorrect = () => {
     if (data) {
-      localStorage.setItem("correct", JSON.stringify(data?.data[0].respuesta))
-      setCorrect(data?.data[0].respuesta)
+      localStorage.setItem("correct", JSON.stringify(data?.[0].respuesta))
+      setCorrect(data?.[0].respuesta)
     }
   }
 
   const checkIfExistLocal = () => {
     const correct = localStorage.getItem("correct")
     if (correct) {
+      
       setCorrect(JSON.parse(correct))
       const question = localStorage.getItem("question") as string
+      console.log(question);
+      
       setQuestion(JSON.parse(question))
       setIsloading(false)
       return true
@@ -118,7 +115,7 @@ export default function Home() {
       )
     
   }
-  
+
   return (
    <Game></Game>
   );
