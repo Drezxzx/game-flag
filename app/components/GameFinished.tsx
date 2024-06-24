@@ -15,7 +15,7 @@ export default function GameFinished() {
 
     return (
         isFinished && <div className="w-screen h-screen flex-col flex justify-center items-center bg-slate-500/40 backdrop-blur-lg absolute z-[999]">
-        <div className="flex flex-col  w-full justify-center gap-5 items-center md:w-1/3 h-1/3 bg-black/80 backdrop-blur-xl rounded-lg ">
+        <div className="flex flex-col p-1  w-full justify-center gap-5 items-center md:w-1/3 h-1/3 bg-black/80 backdrop-blur-xl rounded-lg ">
         <h1 className="text-2xl font-bold">Has Perdido 💔</h1>
         <button onClick={()=>{
             localStorage.clear()
