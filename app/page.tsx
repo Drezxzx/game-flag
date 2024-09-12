@@ -17,6 +17,7 @@ export interface Question {
 export default function Home() {
   const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [imgloading, setImgLoading] = useState<boolean>(true);
   const [correct, setCorrect] = useState<Respuesta[]>([]);
   const [question, setQuestion] = useState<Array<Question[]>>([]);
 
@@ -41,6 +42,8 @@ export default function Home() {
       handleIncorrect();
     }
   }, [data]);
+
+
 
   const handleIncorrect = () => {
     const res: any = [];
@@ -88,16 +91,17 @@ export default function Home() {
     }
 
     return (
-      <main>
+      <main className="max-w-screen h-screen">
         <article className="flex z-0 h-screen w-screen justify-center items-center flex-col relative">
           <GameFinished />
           <Life />
           <h1 className="absolute text-xl font-bold top-5">Adivina la bandera</h1>
           {correct && correct[0] &&
             <article className="animate-fade-in animate-duration-200 w-screen p-2 md:p-0 md:w-1/2 flex items-center justify-center flex-col gap-5" key={2}>
-              <img className="w-[30rem]" src={correct[0].img} alt="Imagen del pais" />
+              <img className="w-[30rem]" src={correct[0].img} onLoad={()=>{setImgLoading(false)
+              }} alt="Imagen del pais" />
               <div className="grid grid-cols-2 grid-rows-4 gap-11 md:gap-7 items-center justify-center" key={1}>
-                {question && question.length > 0 && question.map(item => (
+                {!imgloading && question && question.length > 0 && question.map(item => (
                   item[0] ? (
                     <ButtonSelect
                       key={item[0].ID}
